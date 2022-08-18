@@ -7,7 +7,7 @@ export class AppController {
 
   @Get('BRAandUSA')
   getDatasBU() {
-    return this.appService.getDatasBU();
+  return this.appService.getDatasBU();
   }
 
   @Get('RUSandCHN')

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import fetch from 'cross-fetch';
 import { Parser } from 'json2csv'
+import { writeFile } from 'fs';
 
 @Injectable()
 export class AppService {
@@ -23,7 +24,15 @@ export class AppService {
     const json2csvParser = new Parser();
     const csv = json2csvParser.parse(datas)
 
-    console.log(datas)
+    writeFile('./src/csvFiles/braAndUsaFile.csv', csv, (err) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log("File created successfully") 
+      }
+    })
+
+
     console.log(csv)
     return data
   }
@@ -47,8 +56,17 @@ export class AppService {
     const json2csvParser = new Parser();
     const csv = json2csvParser.parse(datas)
 
-    console.log(datas)
+    writeFile('./src/csvFiles/rusAndChnFile.csv', csv, (err) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log("File created successfully") 
+      }
+    })
+
     console.log(csv)
     return data
   }
 }
+
+// readonly job = new CronJob('******',);
