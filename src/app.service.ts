@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import fetch from 'cross-fetch';
+import { Parser } from 'json2csv'
 
 @Injectable()
 export class AppService {
@@ -19,13 +20,35 @@ export class AppService {
       critical: item.critical
     }))
 
+    const json2csvParser = new Parser();
+    const csv = json2csvParser.parse(datas)
+
     console.log(datas)
+    console.log(csv)
     return data
   }
 
   async getDatasRC() {
     const response = await fetch ('https://disease.sh/v3/covid-19/countries/russia%2C%20china')
     const data = await response.json()
+    
+    const date = new Date();
+    const today = date.toLocaleDateString();
+
+    const datas = data.map((item) => ({
+      country: item.country,
+      date: today,
+      todayCases: item.todayCases,
+      todayDeaths: item.todayDeaths,
+      active: item.active,
+      critical: item.critical
+    }))
+
+    const json2csvParser = new Parser();
+    const csv = json2csvParser.parse(datas)
+
+    console.log(datas)
+    console.log(csv)
     return data
   }
 }
