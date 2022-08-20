@@ -14,4 +14,9 @@ export class AppController {
   getDatasRC() {
     return this.appService.getDatasRC();
   }
+
+  @Get('server')
+  getServer() {
+    return this.appService.getServer();
+  }
 }

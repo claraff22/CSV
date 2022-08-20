@@ -67,6 +67,14 @@ export class AppService {
     console.log(csv)
     return data
   }
+
+  async getServer(){
+    const response = await fetch ('https://api.gofile.io/getServer')
+    const server = await response.json()
+    
+    return server
+  }
+
 }
 
 // readonly job = new CronJob('******',);
