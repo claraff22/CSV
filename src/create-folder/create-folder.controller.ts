@@ -5,8 +5,8 @@ import { CreateFolderService } from './create-folder.service';
 export class CreateFolderController {
     constructor(private readonly createFolderService: CreateFolderService) {}
 
-    @Put(':id')
-    createFolder(@Param('id') id: string, @Body() body) {
+   @Put()
+    createFolder(@Body() body) {
     return this.createFolderService.createFolder(body);
   }
 }
