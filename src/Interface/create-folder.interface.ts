@@ -3,3 +3,8 @@ export interface createFolder {
     folderName: string;
     token: string;
 }
+
+export interface Content {
+    contentID:string;
+    token:string;
+}
