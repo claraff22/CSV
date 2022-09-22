@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { GetServerService } from './get-server.service';
 
 @Controller('get-server')
@@ -8,5 +9,12 @@ export class GetServerController {
     @Get()
     getServer() {
         return this.getServerService.getServer();
+    }
+
+    @Post()
+    @UseInterceptors(FileInterceptor('file'))
+    uploadFile(@UploadedFile() file: Express.Multer.File) {
+        console.log(file)
+        return this.getServerService.uploadFile();
     }
 }

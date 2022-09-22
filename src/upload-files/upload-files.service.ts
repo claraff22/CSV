@@ -4,6 +4,8 @@ import * as FormData from 'form-data';
 import { appendFile, createReadStream, open, readFile, readFileSync } from 'fs';
 import { diskStorage } from 'multer';
 import { setFlagsFromString } from 'v8';
+import { HttpService } from '@nestjs/axios';
+import { map, Observable } from 'rxjs';
 //import {file } from
 
 @Injectable()
@@ -26,14 +28,28 @@ export class MulterConfigService implements MulterOptionsFactory {
     }
   }
 export class UploadFilesService {
-    uploadFile() {
+  constructor(private readonly httpService: HttpService) {}
 
-      const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
+  async getServer(): Promise<Observable<any>> {
+    const response = await this.httpService.axiosRef.get('https://api.gofile.io/getServer')
+    const server = response.data.data.server
+    console.log(server)
+    return server
+  }
 
-      const form = new FormData()
-      form.append('file', fileCSV)
+  uploadFile() {
 
-      
+    /*const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
+    const server = this.getServer
+
+    console.log(server)
+    
+    const form = new FormData()
+    form.append('file', fileCSV)
+    //form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
+    //form.append('folderId', "906fc3a2-eeed-44f5-b11d-a4d8ce3d0f80")
+    //form.append('',)
+    */
     }
 }
 

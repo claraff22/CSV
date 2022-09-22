@@ -1,11 +1,15 @@
-import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { UploadFilesService } from './upload-files.service';
 
 @Controller('upload-files')
 export class UploadFilesController {
-    constructor(private readonly uploadFilesService: UploadFilesService) {}   
+    constructor(private readonly uploadFilesService: UploadFilesService) {}  
+    
+    @Get('server')
+    getServer() {
+        return this.uploadFilesService.getServer();
+    }
 
     @Post()
     @UseInterceptors(FileInterceptor('file'))
