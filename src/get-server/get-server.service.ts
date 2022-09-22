@@ -2,13 +2,13 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import * as FormData from 'form-data';
 import { readFileSync } from 'fs';
-import { map, Observable } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
 
 @Injectable()
 export class GetServerService {
     constructor(private readonly httpService: HttpService) {}
 
-    async getServer(): Promise<Observable<any>> {
+    async getServer(): Promise<Observable<string>> {
         const response = await this.httpService.axiosRef.get('https://api.gofile.io/getServer')
         const getserver = response.data.data.server
         console.log(getserver)
@@ -16,7 +16,7 @@ export class GetServerService {
 
     }
 
-    async uploadFile(){
+    async uploadFile(): Promise<Observable<object>>{
         const server = await this.getServer()
         const url = `https://${server}.gofile.io/uploadFile`
         console.log(server, url)
@@ -30,13 +30,13 @@ export class GetServerService {
 
         console.log(form)
 
-        const init = {
-            headers: {'Content-Type': 'multipart/form-data'}
-        }
-
-        return this.httpService.post(url, form, init)
+        const response = this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
+        const data = await lastValueFrom(response)
+        console.log(response, data)
+        return data
     }
 }
 
-
- /* const response = response.pipe(map(response => response.data.data))*/
+ /* const response = response.pipe(map(response => response.data.data))
+ await lastValueFrom(this.httpService.post(url, form, init).pipe(map(response => response.data))) 
+ */

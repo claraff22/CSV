@@ -12,11 +12,10 @@ export class GetDatasService {
 
     async getDatasBU() {
 
-      //const response = this.httpService.get('https://disease.sh/v3/covid-19/countries/brazil%2C%20usa')
+      const response = await this.httpService.axiosRef.get('https://disease.sh/v3/covid-19/countries/brazil%2C%20usa')
+      const data = response.data
       //const data = response.pipe(map(response => response.data))
       //const datas = data.pipe
-      const response = await fetch ('https://disease.sh/v3/covid-19/countries/brazil%2C%20usa')
-      const data = await response.json()
 
       const date = new Date();
       const today = date.toLocaleDateString();
@@ -46,8 +45,8 @@ export class GetDatasService {
     }
     
     async getDatasRC() {
-        const response = await fetch ('https://disease.sh/v3/covid-19/countries/russia%2C%20china')
-        const data = await response.json()
+        const response = await this.httpService.axiosRef.get('https://disease.sh/v3/covid-19/countries/russia%2C%20china')
+        const data = response.data
         
         const date = new Date();
         const today = date.toLocaleDateString();
