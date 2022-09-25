@@ -9,59 +9,49 @@ import { map, Observable } from 'rxjs';
 //import {file } from
 
 @Injectable()
-
-export class MulterConfigService implements MulterOptionsFactory {
-    createMulterOptions(): MulterModuleOptions {
-      return {
-        storage: diskStorage({
-            destination: './filetest',
-            /*filename(req, file, cb){
-              const date = new Date();
-              const today = date.toLocaleDateString();
-              const filename = file.originalname
-              console.log(filename)
-              return cb(null, today +'-'+ filename)
-            }*/
-          },
-      ),
-      };
-    }
-  }
 export class UploadFilesService {
   constructor(private readonly httpService: HttpService) {}
 
-  async getServer(): Promise<Observable<any>> {
-    const response = await this.httpService.axiosRef.get('https://api.gofile.io/getServer')
-    const server = response.data.data.server
-    console.log(server)
-    return server
-  }
+    async getServer(): Promise<Observable<string>> {
+        const response = await this.httpService.axiosRef.get('https://api.gofile.io/getServer')
+        const getserver = response.data.data.server
+        console.log(getserver)
+        return getserver
 
-  uploadFile() {
-
-    /*const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
-    const server = this.getServer
-
-    console.log(server)
-    
-    const form = new FormData()
-    form.append('file', fileCSV)
-    //form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
-    //form.append('folderId', "906fc3a2-eeed-44f5-b11d-a4d8ce3d0f80")
-    //form.append('',)
-    */
     }
-}
 
-/* 
-file:
-token: vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE
-folderId: (BR) 906fc3a2-eeed-44f5-b11d-a4d8ce3d0f80
-folderId: (RUS) e3778858-dbed-4536-a9a8-273d03a3f76f
-url: https://{server}.gofile.io/uploadFile
+    async uploadFileBU(): Promise<Observable<any>>{
+      const server = await this.getServer()
+      const url = `https://${server}.gofile.io/uploadFile`
+      console.log(server, url)
 
- const form = new FormData()
-      form.append('file', "string")
+      const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
+  
+      const form = new FormData()
+      form.append('file', fileCSV, "BRAandUSA")
+      form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
+      form.append('folderId', "69bd94c2-6033-494b-8b0c-5a75340ab646")
 
       console.log(form)
-*/
+
+      return this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
+    }
+
+    async uploadFileRC(): Promise<Observable<any>>{
+      const server = await this.getServer()
+      const url = `https://${server}.gofile.io/uploadFile`
+      console.log(server, url)
+
+      const fileCSV = readFileSync('./src/csvFiles/rusAndChnFile.csv', 'utf-8')
+  
+      const form = new FormData()
+      form.append('file', fileCSV, "RUSandCHN")
+      form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
+      form.append('folderId', "41d72f19-cd24-4811-95b5-a88d2409aa30")
+
+      console.log(form)
+
+      return this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
+    }
+    
+}

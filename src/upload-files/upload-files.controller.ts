@@ -11,10 +11,13 @@ export class UploadFilesController {
         return this.uploadFilesService.getServer();
     }
 
-    @Post()
-    @UseInterceptors(FileInterceptor('file'))
-    uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log(file)
-        return this.uploadFilesService.uploadFile()
+    @Post('BRAandUSA')
+    uploadFileBU(){
+        return this.uploadFilesService.uploadFileBU()
+    }
+
+    @Post('RUSandCHN')
+    uploadFileRC(){
+        return this.uploadFilesService.uploadFileRC()
     }
 }
