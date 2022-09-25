@@ -12,9 +12,14 @@ export class GetServerController {
     }
 
     @Post()
-    @UseInterceptors(FileInterceptor('file'))
-    uploadFile(@UploadedFile() file: Express.Multer.File) {
-        console.log(file)
+    uploadFile() {
         return this.getServerService.uploadFile();
     }
 }
+
+/*
+@UseInterceptors(FileInterceptor('file'))
+uploadFile(@UploadedFile() file: Express.Multer.File)
+console.log(file)
+
+ */

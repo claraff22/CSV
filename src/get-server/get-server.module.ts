@@ -5,7 +5,7 @@ import { GetServerController } from './get-server.controller';
 import { GetServerService } from './get-server.service';
 
 @Module({
-  imports: [HttpModule, MulterModule.register({})],
+  imports: [HttpModule],
   controllers: [GetServerController],
   providers: [GetServerService],
 })
