@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as FormData from 'form-data';
 import { readFileSync, unlink} from 'fs';
 import { HttpService } from '@nestjs/axios';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ConfigService } from '@nestjs/config';
 
 
@@ -16,11 +16,7 @@ export class UploadFilesService {
       return getserver
     }
 
-    async uploadFileBU(): Promise<Observable<any>>{
-      const server = await this.getServer()
-      const url = `https://${server}.gofile.io/uploadFile`
-      console.log(url)
-
+    async createFormBU() {
       const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
       const fileName = "BRAandUSA"
       const token = this.configService.get('TOKEN')
@@ -31,25 +27,20 @@ export class UploadFilesService {
       form.append('token', token)
       form.append('folderId', folderId)
 
-      console.log(form)
-
-      const response = this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
-
-      unlink('./src/csvFiles/braAndUsaFile.csv', (err) =>{
-          if (err) throw err
-          console.log("File deleted successfully")
-        })
-
-      console.log(response)  
-      return response
+      return form
     }
 
-    async uploadFileRC(): Promise<Observable<any>>{
+    async uploadFileBU(){
       const server = await this.getServer()
       const url = `https://${server}.gofile.io/uploadFile`
 
-      console.log(url)
+      const form = await this.createFormBU()
 
+      const response = await this.httpService.axiosRef.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}})
+      return response.data  
+    }
+
+    async createFormRC(){
       const fileCSV = readFileSync('./src/csvFiles/rusAndChnFile.csv', 'utf-8')
       const fileName = "RUSandCHN"
       const token = this.configService.get('TOKEN')
@@ -60,17 +51,29 @@ export class UploadFilesService {
       form.append('token', token)
       form.append('folderId', folderId)
 
-      console.log(form)
+      return form
+    }
 
-      const response = this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
+    async uploadFileRC(){
+      const server = await this.getServer()
+      const url = `https://${server}.gofile.io/uploadFile`
+
+      const form = await this.createFormRC()
+      
+      const response = await this.httpService.axiosRef.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}})
+      return response.data
+    }
+
+    async removeFiles(){
+      unlink('./src/csvFiles/braAndUsaFile.csv', (err) =>{
+        if (err) throw err
+        console.log("File BRAandUSA deleted successfully")
+      }) 
 
       unlink('./src/csvFiles/rusAndChnFile.csv', (err) =>{
         if (err) throw err
-        console.log("File deleted successfully")
+       console.log("File RUSandCHN deleted successfully")
       })
-
-      console.log(response)
-      return response
     }
     
 }

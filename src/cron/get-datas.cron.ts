@@ -7,11 +7,13 @@ import { GetDatasService } from "src/get-datas/get-datas.service";
 export class getDatasCron{
     constructor(private readonly getDatasService: GetDatasService){}
 
-    @Cron('34 23 * * *')
-    async handlerDatas(){
+    @Cron('51 23 * * *')
+    async handleDatasBU(){
         const getDatasBU = await this.getDatasService.getDatasBU()
+    }
+
+    @Cron('10 51 23 * * *')
+    async handleDatasRC(){
         const getDatasRC = await this.getDatasService.getDatasRC()
-        console.log("created datas successfully")
-        return null
     }
 }
