@@ -6,11 +6,12 @@ import { diskStorage } from 'multer';
 import { setFlagsFromString } from 'v8';
 import { HttpService } from '@nestjs/axios';
 import { map, Observable } from 'rxjs';
+import { ConfigService } from '@nestjs/config';
 //import {file } from
 
 @Injectable()
 export class UploadFilesService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(private readonly httpService: HttpService, private readonly configService: ConfigService) {}
 
     async getServer(): Promise<Observable<string>> {
         const response = await this.httpService.axiosRef.get('https://api.gofile.io/getServer')
@@ -25,12 +26,18 @@ export class UploadFilesService {
       const url = `https://${server}.gofile.io/uploadFile`
       console.log(server, url)
 
+      const date = new Date();
+      const today = date.toLocaleDateString();
+
       const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
-  
+      const fileName = "BRAandUSA"
+      const token = this.configService.get('TOKEN')
+      const folderId = this.configService.get('GO_FILE_FOLDER_ID_BU')
+
       const form = new FormData()
-      form.append('file', fileCSV, "BRAandUSA")
-      form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
-      form.append('folderId', "69bd94c2-6033-494b-8b0c-5a75340ab646")
+      form.append('file', fileCSV, fileName)
+      form.append('token', token)
+      form.append('folderId', folderId)
 
       console.log(form)
 
@@ -43,11 +50,14 @@ export class UploadFilesService {
       console.log(server, url)
 
       const fileCSV = readFileSync('./src/csvFiles/rusAndChnFile.csv', 'utf-8')
+      const token = this.configService.get('TOKEN')
+      const folderId = this.configService.get('GO_FILE_FOLDER_ID_RC')
+
   
       const form = new FormData()
       form.append('file', fileCSV, "RUSandCHN")
-      form.append('token', "vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE")
-      form.append('folderId', "41d72f19-cd24-4811-95b5-a88d2409aa30")
+      form.append('token', token)
+      form.append('folderId', folderId)
 
       console.log(form)
 
