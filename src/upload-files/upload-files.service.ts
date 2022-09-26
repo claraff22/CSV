@@ -19,6 +19,7 @@ export class UploadFilesService {
     async uploadFileBU(): Promise<Observable<any>>{
       const server = await this.getServer()
       const url = `https://${server}.gofile.io/uploadFile`
+      console.log(url)
 
       const fileCSV = readFileSync('./src/csvFiles/braAndUsaFile.csv', 'utf-8')
       const fileName = "BRAandUSA"
@@ -30,19 +31,24 @@ export class UploadFilesService {
       form.append('token', token)
       form.append('folderId', folderId)
 
+      console.log(form)
+
       const response = this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
 
       unlink('./src/csvFiles/braAndUsaFile.csv', (err) =>{
-        if (err) throw err
-        console.log("File deleted successfully")
-      })
+          if (err) throw err
+          console.log("File deleted successfully")
+        })
 
+      console.log(response)  
       return response
     }
 
     async uploadFileRC(): Promise<Observable<any>>{
       const server = await this.getServer()
       const url = `https://${server}.gofile.io/uploadFile`
+
+      console.log(url)
 
       const fileCSV = readFileSync('./src/csvFiles/rusAndChnFile.csv', 'utf-8')
       const fileName = "RUSandCHN"
@@ -54,6 +60,8 @@ export class UploadFilesService {
       form.append('token', token)
       form.append('folderId', folderId)
 
+      console.log(form)
+
       const response = this.httpService.post(url, form, { headers: {'Content-Type': 'multipart/form-data'}}).pipe(map(response => response.data))
 
       unlink('./src/csvFiles/rusAndChnFile.csv', (err) =>{
@@ -61,6 +69,7 @@ export class UploadFilesService {
         console.log("File deleted successfully")
       })
 
+      console.log(response)
       return response
     }
     
