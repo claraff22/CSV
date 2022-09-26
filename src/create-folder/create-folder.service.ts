@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpStatus, Injectable, Req } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { map, Observable } from 'rxjs';
 import { createFolder } from 'src/Interface/create-folder.interface';
 
@@ -14,6 +14,3 @@ export class CreateFolderService {
 
     }
 }
-//id: b8ae8c4e-a9d9-4c60-a214-7291470426dd
-//nome da pasta
-//token:  vV4W7Pou6bzrLjqFupGrLnVuSwizBPaE

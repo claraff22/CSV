@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Put } from '@nestjs/common';
 import { CreateFolderService } from './create-folder.service';
 
 @Controller('create-folder')
